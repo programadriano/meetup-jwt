@@ -32,12 +32,10 @@ export class LoginComponent implements OnInit {
       username: val.email,
       password: val.password
     };
-    console.log(user);
-
+   
     if (user.username && user.password) {
       this.loginService.login(user)
         .subscribe((data: any) => {
-          console.log(data);
           localStorage["token"] = data.token;
           this.router.navigateByUrl('/');
         });

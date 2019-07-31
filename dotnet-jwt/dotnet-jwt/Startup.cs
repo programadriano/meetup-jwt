@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using dotnet_jwt.Infra;
@@ -35,6 +29,7 @@ namespace dotnet_jwt
 
             services.Configure<TokenManagement>(Configuration.GetSection("tokenManagement"));
 
+            #region [JWT]
             var token = Configuration.GetSection("tokenManagement").Get<TokenManagement>();
             var secret = Encoding.ASCII.GetBytes(token.Secret);
 
@@ -64,11 +59,12 @@ namespace dotnet_jwt
                     .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
                     .RequireAuthenticatedUser().Build());
             });
-         
-
+            #endregion
+          
+            #region [Dependencias]
             services.AddScoped<IAuthenticateService, TokenAuthenticationService>();
             services.AddScoped<IUserManagementService, UserManagementService>();
-
+            #endregion
 
         }
 
@@ -80,9 +76,11 @@ namespace dotnet_jwt
                 app.UseDeveloperExceptionPage();
             }
 
+            #region [Cors]
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-            app.UseAuthentication();
+            #endregion
 
+            app.UseAuthentication();
             app.UseMvc();
         }
     }
