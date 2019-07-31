@@ -8,15 +8,17 @@ import { HomeService } from './services/home.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private homeService: HomeService) { }
+  result: any;
 
+  constructor(private homeService: HomeService) { }
+  
   ngOnInit() {
     this.getAll();
   }
 
   getAll() {
     this.homeService.getAll().subscribe((data) => {
-      console.log(data);
+      this.result = data;
     })
   }
 

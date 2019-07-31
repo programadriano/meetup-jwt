@@ -1,4 +1,3 @@
-import 'rxjs/add/operator/do';
 import { AuthService } from './auth.service';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -17,6 +16,7 @@ export class JwtInterceptor implements HttpInterceptor {
         }, (err: any) => {
             if (err instanceof HttpErrorResponse) {
                 if (err.status === 401) {
+                    localStorage.removeItem('token');
                     this.router.navigate(['/login']);
                 }
             }

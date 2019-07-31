@@ -8,6 +8,7 @@ import { TokenInterceptor } from './shared/services/token.interceptor';
 import { AuthGuard } from './shared/services/auth.guard';
 import { AuthService } from './shared/services/auth.service';
 import { HttpUtilService } from './shared/services/http-util.service';
+import { JwtInterceptor } from './shared/services/jwt.interceptor';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,11 @@ import { HttpUtilService } from './shared/services/http-util.service';
     HttpClientModule
   ],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
